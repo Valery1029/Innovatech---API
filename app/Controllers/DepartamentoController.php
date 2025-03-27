@@ -53,6 +53,7 @@ class DepartamentoController extends Controller
         echo json_encode($data);
     }
 
+    //Metodo get by id
     public function singleDepartamento($id = null)
     {
         if ($this->request->isAJAX()) {
@@ -73,6 +74,7 @@ class DepartamentoController extends Controller
         echo json_encode($data);
     }
 
+    //Metodo update
     public function update()
     {
         if ($this->request->isAJAX()) {
@@ -100,6 +102,7 @@ class DepartamentoController extends Controller
         echo json_encode($dataModel);
     }
 
+    //Metodo delete
     public function delete($id = null)
     {
         try {
@@ -121,6 +124,7 @@ class DepartamentoController extends Controller
         echo json_encode($data);
     }
 
+    //Metodo get
     public function getDataModel()
     {
         $data = [
