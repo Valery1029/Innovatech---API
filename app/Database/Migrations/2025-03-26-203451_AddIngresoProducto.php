@@ -20,7 +20,7 @@ class AddIngresoProducto extends Migration
                 'constraint' => 255,
                 'null'       => false,
             ],
-            'UsuarioId_usuario2' => [
+            'usuario_id' => [  // 🔄 Cambiado a usuario_id
                 'type'       => 'INT',
                 'constraint' => 10,
                 'unsigned'   => true,
@@ -37,7 +37,7 @@ class AddIngresoProducto extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('UsuarioId_usuario2', 'usuario', 'id_usuario', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('usuario_id', 'usuario', 'id_usuario', 'CASCADE', 'CASCADE'); // 🔄 Cambiado para coincidir con `usuario.id_usuario`
 
         $this->forge->createTable('ingreso_producto');
     }
