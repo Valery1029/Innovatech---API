@@ -6,7 +6,7 @@ use App\Models\DepartamentoModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class DepartamentoController extends Controller
+class DepartamentoApi extends Controller
 {
     private $primaryKey;
     private $DepartamentoModel;
