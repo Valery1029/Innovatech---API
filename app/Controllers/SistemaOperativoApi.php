@@ -2,42 +2,42 @@
 
 namespace App\Controllers;
 
-use App\Models\UsuarioModel;
+use App\Models\SistemaOperativoModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class UsuarioApi extends Controller {
+class SistemaOperativoApi extends Controller {
   private $primaryKey;
-  private $UsuarioModel;
+  private $SistemaOperativoModel;
   private $data;
   private $model;
 
   // Constructor
   public function __construct() {
     $this->primaryKey = "id";
-    $this->UsuarioModel = new UsuarioModel();
+    $this->SistemaOperativoModel = new SistemaOperativoModel();
     $this->data = [];
-    $this->model = "UsuarioModel";
+    $this->model = "SistemaOperativoModel";
   }
 
-  // Método index: Obtener todos los usuarios
+  // Método index: Obtener todos los sistemas operativos
   public function index() {
-    $this->data["title"] = "USUARIOS";
-    $this->data[$this->model] = $this->UsuarioModel->orderBy($this->primaryKey, "ASC")->findAll();
-    return view("usuarios/usuario_view", $this->data);
+    $this->data["title"] = "SISTEMA OPERATIVO";
+    $this->data[$this->model] = $this->SistemaOperativoModel->orderBy($this->primaryKey, "ASC")->findAll();
+    return view("sistema_operativo/sistema_operativo_view", $this->data);
   }
 
-  // Método create: Crear un nuevo usuario
+  // Método create: Crear un nuevo sistema operativo
   public function create() {
     if ($this->request->isAJAX()) {
       $dataModel = $this->getDataModel();
-      if ($this->UsuarioModel->insert($dataModel)) {
+      if ($this->SistemaOperativoModel->insert($dataModel)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = $dataModel;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error creando usuario";
+        $data["message"] = "Error creando sistema operativo";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -49,15 +49,15 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método singleUsuario: Obtener un usuario por ID
-  public function singleUsuario($id = null) {
+  // Método singleSistemaOperativo: Obtener un sistema operativo por ID
+  public function singleSistemaOperativo($id = null) {
     if ($this->request->isAJAX()) {
-      if ($data[$this->model] = $this->UsuarioModel->where($this->primaryKey, $id)->first()) {
+      if ($data[$this->model] = $this->SistemaOperativoModel->where($this->primaryKey, $id)->first()) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error obteniendo usuario";
+        $data["message"] = "Error obteniendo sistema operativo";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -69,7 +69,7 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método update: Actualizar un usuario
+  // Método update: Actualizar un sistema operativo
   public function update() {
     if ($this->request->isAJAX()) {
       $today = date("Y-m-d H:i:s");
@@ -78,13 +78,13 @@ class UsuarioApi extends Controller {
         "nombre" => $this->request->getVar("nombre"),
         "updated_at" => $today
       ];
-      if ($this->UsuarioModel->update($id, $dataModel)) {
+      if ($this->SistemaOperativoModel->update($id, $dataModel)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = $dataModel;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error actualizando usuario";
+        $data["message"] = "Error actualizando sistema operativo";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -96,16 +96,16 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método delete: Eliminar un usuario
+  // Método delete: Eliminar un sistema operativo
   public function delete($id = null) {
     try {
-      if ($this->UsuarioModel->where($this->primaryKey, $id)->delete($id)) {
+      if ($this->SistemaOperativoModel->where($this->primaryKey, $id)->delete($id)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = "OK";
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error eliminando usuario";
+        $data["message"] = "Error eliminando sistema operativo";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "error";
       }
@@ -117,7 +117,7 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método getDataModel: Obtener datos del usuario desde la solicitud
+  // Método getDataModel: Obtener datos del sistema operativo desde la solicitud
   public function getDataModel() {
     $data = [
       "id" => $this->request->getVar("id"),

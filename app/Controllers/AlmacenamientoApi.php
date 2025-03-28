@@ -1,43 +1,47 @@
-<?php
+<?php 
 
 namespace App\Controllers;
 
-use App\Models\UsuarioModel;
+use App\Models\AlmacenamientoModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class UsuarioApi extends Controller {
+class AlmacenamientoApi extends Controller
+{
   private $primaryKey;
-  private $UsuarioModel;
+  private $AlmacenamientoModel;
   private $data;
   private $model;
 
-  // Constructor
-  public function __construct() {
+  // Método constructor
+  public function __construct()
+  {
     $this->primaryKey = "id";
-    $this->UsuarioModel = new UsuarioModel();
+    $this->AlmacenamientoModel = new AlmacenamientoModel();
     $this->data = [];
-    $this->model = "UsuarioModel";
+    $this->model = "AlmacenamientoModel";
   }
 
-  // Método index: Obtener todos los usuarios
-  public function index() {
-    $this->data["title"] = "USUARIOS";
-    $this->data[$this->model] = $this->UsuarioModel->orderBy($this->primaryKey, "ASC")->findAll();
-    return view("usuarios/usuario_view", $this->data);
+  // Método index
+  public function index()
+  {
+    $this->data["title"] = "ALMACENAMIENTO";
+    $this->data[$this->model] = $this->AlmacenamientoModel->orderBy($this->primaryKey, "ASC")->findAll();
+    return view("almacenamiento/almacenamiento_view", $this->data);
   }
 
-  // Método create: Crear un nuevo usuario
-  public function create() {
+  // Método create
+  public function create()
+  {
     if ($this->request->isAJAX()) {
       $dataModel = $this->getDataModel();
-      if ($this->UsuarioModel->insert($dataModel)) {
+      if ($this->AlmacenamientoModel->insert($dataModel)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = $dataModel;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error creando usuario";
+        $data["message"] = "Error create almacenamiento";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -49,15 +53,16 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método singleUsuario: Obtener un usuario por ID
-  public function singleUsuario($id = null) {
+  //Metodo get by id
+  public function singleAlmacenamiento($id = null)
+  {
     if ($this->request->isAJAX()) {
-      if ($data[$this->model] = $this->UsuarioModel->where($this->primaryKey, $id)->first()) {
+      if ($data[$this->model] = $this->AlmacenamientoModel->where($this->primaryKey, $id)->first()) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error obteniendo usuario";
+        $data["message"] = "Error almacenamiento no encontrado";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -69,22 +74,24 @@ class UsuarioApi extends Controller {
     echo json_encode($data);
   }
 
-  // Método update: Actualizar un usuario
-  public function update() {
+  //Metodo update
+  public function update()
+  {
     if ($this->request->isAJAX()) {
       $today = date("Y-m-d H:i:s");
       $id = $this->request->getVar($this->primaryKey);
       $dataModel = [
-        "nombre" => $this->request->getVar("nombre"),
-        "updated_at" => $today
+        "num" => $this->request->getVar("num"),
+        "unidadestandar" => $this->request->getVar("unidadestandar"),
+        "update_at" => $today
       ];
-      if ($this->UsuarioModel->update($id, $dataModel)) {
+      if ($this->AlmacenamientoModel->update($id, $dataModel)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = $dataModel;
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error actualizando usuario";
+        $data["message"] = "Error actualizar almacenamiento";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "";
       }
@@ -93,36 +100,39 @@ class UsuarioApi extends Controller {
       $data["response"] = ResponseInterface::HTTP_CONFLICT;
       $data["data"] = "";
     }
-    echo json_encode($data);
+    echo json_encode($dataModel);
   }
 
-  // Método delete: Eliminar un usuario
-  public function delete($id = null) {
+  //Metodo delete
+  public function delete($id = null)
+  {
     try {
-      if ($this->UsuarioModel->where($this->primaryKey, $id)->delete($id)) {
+      if ($this->AlmacenamientoModel->where($this->primaryKey, $id)->delete($id)) {
         $data["message"] = "success";
         $data["response"] = ResponseInterface::HTTP_OK;
         $data["data"] = "OK";
         $data["csrf"] = csrf_hash();
       } else {
-        $data["message"] = "Error eliminando usuario";
+        $data["message"] = "Error eliminar almacenamiento";
         $data["response"] = ResponseInterface::HTTP_NO_CONTENT;
         $data["data"] = "error";
       }
     } catch (\Exception $e) {
-      $data["message"] = $e->getMessage();
+      $data["message"] = $e;
       $data["response"] = ResponseInterface::HTTP_CONFLICT;
       $data["data"] = "Error";
     }
     echo json_encode($data);
   }
 
-  // Método getDataModel: Obtener datos del usuario desde la solicitud
-  public function getDataModel() {
+  //Metodo get
+  public function getDataModel()
+  {
     $data = [
       "id" => $this->request->getVar("id"),
-      "nombre" => $this->request->getVar("nombre"),
-      "updated_at" => $this->request->getVar("updated_at")
+      "num" => $this->request->getVar("num"),
+      "unidadestandar" => $this->request->getVar("unidadestandar"),
+      "update_at" => $this->request->getVar("update_at")
     ];
     return $data;
   }
